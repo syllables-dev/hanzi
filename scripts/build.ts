@@ -51,5 +51,3 @@ await Promise.all(
       }
     })
 );
-
-process.exit(0);
