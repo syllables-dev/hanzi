@@ -6,10 +6,33 @@ import hantWords from "@/data/to-hant/words.tsv" with { type: "text" };
 
 export type Target = "hans" | "hant";
 
+export interface WordNode {
+  next: Map<string, WordNode>;
+  output?: string[];
+}
+
 export interface Dictionary {
   chars: ReadonlyMap<string, string>;
   longest: number;
+  trie: WordNode;
   words: ReadonlyMap<string, string>;
+}
+
+function buildTrie(words: ReadonlyMap<string, string>) {
+  const root: WordNode = { next: new Map() };
+  for (const [word, output] of words) {
+    let node = root;
+    for (const char of word) {
+      let child = node.next.get(char);
+      if (child === undefined) {
+        child = { next: new Map() };
+        node.next.set(char, child);
+      }
+      node = child;
+    }
+    node.output = [...output];
+  }
+  return root;
 }
 
 function readPairs(tsv: string) {
@@ -29,6 +52,7 @@ function readDictionary(charsTsv: string, wordsTsv: string): Dictionary {
   return {
     chars: readPairs(charsTsv),
     longest: Math.max(...[...words.keys()].map((word) => [...word].length)),
+    trie: buildTrie(words),
     words,
   };
 }

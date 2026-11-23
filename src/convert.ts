@@ -3,6 +3,7 @@ import {
   type Dictionary,
   dictionaries,
   type Target,
+  type WordNode,
 } from "@/dictionary";
 import { onlyIn, scriptOf } from "@/script";
 
@@ -10,28 +11,31 @@ const cantoneseMarks =
   /[嘅咗啲喺嗰冇唔佢哋嚟咩嘢乜噉啱㗎喎嚿瞓攞揾搵谂諗畀睇冧嬲]/u;
 
 function chooseFromWords(
-  { longest, words }: Dictionary,
+  { longest, trie }: Dictionary,
   chars: string[],
   position: number,
   shortest: number
 ) {
-  for (
-    let length = Math.min(longest, chars.length);
-    length >= shortest;
-    length -= 1
-  ) {
-    const first = Math.max(0, position - length + 1);
-    for (
-      let start = Math.min(position, chars.length - length);
-      start >= first;
-      start -= 1
-    ) {
-      const output = words.get(chars.slice(start, start + length).join(""));
-      if (output !== undefined) {
-        return [...output][position - start];
+  let bestLength = shortest - 1;
+  let bestStart = position;
+  let bestOutput: string[] | undefined;
+  const first = Math.max(0, position - longest + 1);
+  for (let start = position; start >= first; start -= 1) {
+    let node: WordNode | undefined = trie;
+    for (let end = start; end < chars.length; end += 1) {
+      node = node.next.get(chars[end] ?? "");
+      if (node === undefined) {
+        break;
+      }
+      const length = end - start + 1;
+      if (node.output && end >= position && length > bestLength) {
+        bestLength = length;
+        bestStart = start;
+        bestOutput = node.output;
       }
     }
   }
+  return bestOutput?.[position - bestStart];
 }
 
 function convertLine(line: string, target: Target) {
