@@ -35,4 +35,4 @@ bun run tsgo
 
 ## License
 
-Proprietary.
+MIT. See [LICENSE](LICENSE).

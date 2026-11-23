@@ -2,7 +2,7 @@
   "name": "@syllables-dev/hanzi",
   "version": "0.1.0",
   "description": "Simplified and Traditional Chinese script detection and conversion.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,7 +26,7 @@
   },
   "files": [
     "dist",
-    "NOTICE",
+    "LICENSE",
     "README.md"
   ],
   "publishConfig": {
