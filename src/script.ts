@@ -16,31 +16,46 @@ function ownCharacters({ chars, words }: Dictionary) {
       }
     });
   }
-  return new Set([...sources].filter((char) => !kept.has(char)));
+  const changedByDefault = (char: string) =>
+    (chars.get(char) ?? words.get(char)) !== char;
+  return {
+    always: new Set([...sources].filter((char) => !kept.has(char))),
+    usually: new Set(
+      [...kept].filter((char) => words.has(char) && changedByDefault(char))
+    ),
+  };
 }
 
-export const onlyIn = {
+const own = {
   hans: ownCharacters(dictionaries.hant),
   hant: ownCharacters(dictionaries.hans),
 };
 
+export const onlyIn = { hans: own.hans.always, hant: own.hant.always };
+
 const han = /\p{Script=Han}/u;
 
 export function scriptOf(text: string): Script {
-  let hans = 0;
-  let hant = 0;
+  const counts = { hans: 0, hansUsually: 0, hant: 0, hantUsually: 0 };
   let shared = false;
   for (const char of text) {
-    if (onlyIn.hans.has(char)) {
-      hans += 1;
-    } else if (onlyIn.hant.has(char)) {
-      hant += 1;
+    if (own.hans.always.has(char)) {
+      counts.hans += 1;
+    } else if (own.hant.always.has(char)) {
+      counts.hant += 1;
+    } else if (own.hans.usually.has(char)) {
+      counts.hansUsually += 1;
+    } else if (own.hant.usually.has(char)) {
+      counts.hantUsually += 1;
     } else if (han.test(char)) {
       shared = true;
     }
   }
-  if (hans !== hant) {
-    return hans > hant ? "hans" : "hant";
+  if (counts.hans !== counts.hant) {
+    return counts.hans > counts.hant ? "hans" : "hant";
   }
-  return hans > 0 || shared ? "both" : "none";
+  if (counts.hansUsually !== counts.hantUsually) {
+    return counts.hansUsually > counts.hantUsually ? "hans" : "hant";
+  }
+  return counts.hans > 0 || shared || counts.hansUsually > 0 ? "both" : "none";
 }

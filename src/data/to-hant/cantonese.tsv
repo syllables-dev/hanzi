@@ -1,0 +1,35 @@
+# applies to lines with colloquial cantonese, where 系 is mostly 係 (is) and 只 mostly 隻 (a classifier)
+# a single character here beats two-character words of words.tsv; longer words and the words below still win
+# 系 係 系 繫
+系	係
+系统	系統
+系列	系列
+体系	體系
+星系	星系
+学系	學系
+科系	科系
+中文系	中文系
+派系	派系
+联系	聯繫
+维系	維繫
+系鞋带	繫鞋帶
+系安全带	繫安全帶
+
+# 只 只 隻
+只	隻
+只系	只係
+只有	只有
+只要	只要
+只能	只能
+只好	只好
+只会	只會
+只是	只是
+只得	只得
+只怕	只怕
+只顾	只顧
+只想	只想
+只可	只可
+只限	只限
+只不过	只不過
+不只	不只
+唔只	唔只

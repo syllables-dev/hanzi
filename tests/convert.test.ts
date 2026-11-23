@@ -74,6 +74,92 @@ test("picks the reading that fits common lyric words", () => {
   ).toEqual(["麵包", "回頭", "幸福", "治癒", "嚮往", "骯髒", "嚇我"]);
 });
 
+test("reads whole dictionary words instead of fragments around them", () => {
+  expect(
+    convert(
+      [
+        "国家制度",
+        "这个里面",
+        "洗完才干净",
+        "午后钟声",
+        "头发白了",
+        "千只是梦",
+      ],
+      "hant"
+    )
+  ).toEqual([
+    "國家制度",
+    "這個裏面",
+    "洗完才乾淨",
+    "午後鐘聲",
+    "頭髮白了",
+    "千只是夢",
+  ]);
+});
+
+test("writes 干 as 乾 unless a word needs 幹 or 干", () => {
+  expect(
+    convert(["眼泪流干", "干了这杯", "能干", "别再干傻事", "若干"], "hant")
+  ).toEqual(["眼淚流乾", "乾了這杯", "能幹", "別再幹傻事", "若干"]);
+});
+
+test("covers common words from the dictionary", () => {
+  expect(
+    convert(
+      [
+        "形单影只",
+        "系鞋带",
+        "星系",
+        "复习",
+        "上游",
+        "歌后",
+        "方便面",
+        "卷土重来",
+      ],
+      "hant"
+    )
+  ).toEqual([
+    "形單影隻",
+    "繫鞋帶",
+    "星系",
+    "複習",
+    "上游",
+    "歌后",
+    "方便麵",
+    "捲土重來",
+  ]);
+});
+
+test("reads 系 as 係 and 只 as 隻 in colloquial cantonese", () => {
+  expect(
+    convert(
+      ["梗系上集好睇", "我哋嗰只猫", "佢只系想你", "呢个系统唔得"],
+      "hant"
+    )
+  ).toEqual(["梗係上集好睇", "我哋嗰隻貓", "佢只係想你", "呢個系統唔得"]);
+});
+
+test("keeps cantonese characters as they are going to simplified", () => {
+  expect(convert(["嗰阵时", "攞晒", "系喎"], "hans")).toEqual([
+    "嗰阵时",
+    "攞晒",
+    "系喎",
+  ]);
+});
+
+test("never chains one traditional form into another", () => {
+  expect(convert(["苧麻", "苎麻"], "hant")).toEqual(["苧麻", "苧麻"]);
+  expect(convert("幺妹", "hans")).toBe("幺妹");
+});
+
+test("fixes shared characters in a traditional line only where a word says so", () => {
+  expect(convert(["我們心里", "情難自制", "枱面的"], "hant")).toEqual([
+    "我們心裏",
+    "情難自制",
+    "枱面的",
+  ]);
+});
+
 test("leaves shared characters alone in a line already in the target script", () => {
   expect(convert("皇后與國王们", "hant")).toBe("皇后與國王們");
 });

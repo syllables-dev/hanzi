@@ -13,8 +13,13 @@ test("names the script a line is written in", () => {
   ).toEqual(["hans", "hant", "hant", "both", "none"]);
 });
 
-test("counts characters that stay unchanged in simplified words as shared", () => {
-  expect(detect("乾隆著作")).toBe("both");
+test("lets characters a few words keep decide when nothing else does", () => {
+  expect(detect(["以后", "干杯", "乾杯", "於是"])).toEqual([
+    "hans",
+    "hans",
+    "hant",
+    "hant",
+  ]);
 });
 
 test("lets the script with more of its own characters win a mixed line", () => {

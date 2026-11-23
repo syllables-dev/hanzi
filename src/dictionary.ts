@@ -1,5 +1,6 @@
 import hansChars from "@/data/to-hans/chars.tsv" with { type: "text" };
 import hansWords from "@/data/to-hans/words.tsv" with { type: "text" };
+import hantCantonese from "@/data/to-hant/cantonese.tsv" with { type: "text" };
 import hantChars from "@/data/to-hant/chars.tsv" with { type: "text" };
 import hantWords from "@/data/to-hant/words.tsv" with { type: "text" };
 
@@ -31,6 +32,8 @@ function readDictionary(charsTsv: string, wordsTsv: string): Dictionary {
     words,
   };
 }
+
+export const cantonese: Dictionary = readDictionary("", hantCantonese);
 
 export const dictionaries: Record<Target, Dictionary> = {
   hans: readDictionary(hansChars, hansWords),
