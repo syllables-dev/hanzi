@@ -1,13 +1,13 @@
 // biome-ignore-all lint/performance/noBarrelFile: file defines package public surface
 
+import type { Target } from "@/dictionary";
 import { toHans } from "@/hans";
 import { toHant } from "@/hant";
-import type { Target } from "@/script";
 
 export { detect, type Script } from "@/detect";
+export type { Target } from "@/dictionary";
 export { toHans } from "@/hans";
 export { toHant } from "@/hant";
-export type { Target } from "@/script";
 
 export function convert(text: string, target: Target): string;
 export function convert(lines: readonly string[], target: Target): string[];

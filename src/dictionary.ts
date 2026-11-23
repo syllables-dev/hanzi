@@ -33,9 +33,9 @@ function readDictionary(charsTsv: string, wordsTsv: string): Dictionary {
   };
 }
 
-export const cantonese: Dictionary = readDictionary("", hantCantonese);
+export const cantonese = readDictionary("", hantCantonese);
 
-export const dictionaries: Record<Target, Dictionary> = {
+export const dictionaries = {
   hans: readDictionary(hansChars, hansWords),
   hant: readDictionary(hantChars, hantWords),
 };

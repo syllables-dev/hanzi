@@ -1,8 +1,8 @@
 import { type Dictionary, dictionaries } from "@/dictionary";
 
-export type { Target } from "@/dictionary";
-
 export type Script = "hans" | "hant" | "both" | "none";
+
+const han = /\p{Script=Han}/u;
 
 function ownCharacters({ chars, words }: Dictionary) {
   const kept = new Set<string>();
@@ -16,12 +16,13 @@ function ownCharacters({ chars, words }: Dictionary) {
       }
     });
   }
-  const changedByDefault = (char: string) =>
-    (chars.get(char) ?? words.get(char)) !== char;
   return {
     always: new Set([...sources].filter((char) => !kept.has(char))),
     usually: new Set(
-      [...kept].filter((char) => words.has(char) && changedByDefault(char))
+      [...kept].filter(
+        (char) =>
+          words.has(char) && (chars.get(char) ?? words.get(char)) !== char
+      )
     ),
   };
 }
@@ -32,8 +33,6 @@ const own = {
 };
 
 export const onlyIn = { hans: own.hans.always, hant: own.hant.always };
-
-const han = /\p{Script=Han}/u;
 
 export function scriptOf(text: string): Script {
   const counts = { hans: 0, hansUsually: 0, hant: 0, hantUsually: 0 };

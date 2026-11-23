@@ -6,6 +6,9 @@ import {
 } from "@/dictionary";
 import { onlyIn, scriptOf } from "@/script";
 
+const cantoneseMarks =
+  /[嘅咗啲喺嗰冇唔佢哋嚟咩嘢乜噉啱㗎喎嚿瞓攞揾搵谂諗畀睇冧嬲]/u;
+
 function chooseFromWords(
   { longest, words }: Dictionary,
   chars: string[],
@@ -31,19 +34,6 @@ function chooseFromWords(
   }
 }
 
-const cantoneseMarks =
-  /[嘅咗啲喺嗰冇唔佢哋嚟咩嘢乜噉啱㗎喎嚿瞓攞揾搵谂諗畀睇冧嬲]/u;
-
-function chooseInCantonese(chars: string[], position: number) {
-  const own = chooseFromWords(cantonese, chars, position, 2);
-  if (own !== undefined) {
-    return own;
-  }
-  const main = dictionaries.hant;
-  const longer = chooseFromWords(main, chars, position, 3);
-  return longer ?? cantonese.words.get(chars[position] ?? "");
-}
-
 function convertLine(line: string, target: Target) {
   const dictionary = dictionaries[target];
   const foreign = target === "hant" ? onlyIn.hans : onlyIn.hant;
@@ -61,7 +51,11 @@ function convertLine(line: string, target: Target) {
         );
       }
       if (spoken && cantonese.words.has(char)) {
-        return chooseInCantonese(chars, position) ?? char;
+        return (
+          chooseFromWords(cantonese, chars, position, 2) ??
+          chooseFromWords(dictionary, chars, position, 3) ??
+          cantonese.words.get(char)
+        );
       }
       return (
         dictionary.chars.get(char) ??
