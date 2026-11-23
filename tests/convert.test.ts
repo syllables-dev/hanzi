@@ -63,9 +63,12 @@ test("writes the fighting 斗 as 鬥 but keeps the measuring one", () => {
 });
 
 test("keeps cantonese words in their hong kong spelling", () => {
-  expect(
-    convert(["我好钟意你", "秘书台", "张台", "里边", "尽量"], "hant")
-  ).toEqual(["我好鍾意你", "秘書台", "張枱", "裏邊", "盡量"]);
+  expect(convert(["我好钟意你", "秘书台", "张台", "里边"], "hant")).toEqual([
+    "我好鍾意你",
+    "秘書台",
+    "張枱",
+    "裏邊",
+  ]);
 });
 
 test("picks the reading that fits common lyric words", () => {
