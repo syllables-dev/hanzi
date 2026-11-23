@@ -163,6 +163,37 @@ test("fixes shared characters in a traditional line only where a word says so", 
   ]);
 });
 
+test("writes 儘 for as far as possible and 盡 for using up", () => {
+  expect(
+    convert(
+      [
+        "尽管",
+        "尽可能",
+        "尽快",
+        "尽量",
+        "应尽早",
+        "尽力",
+        "尽情",
+        "尽心",
+        "尽兴",
+        "尽责",
+      ],
+      "hant"
+    )
+  ).toEqual([
+    "儘管",
+    "儘可能",
+    "儘快",
+    "儘量",
+    "應儘早",
+    "盡力",
+    "盡情",
+    "盡心",
+    "盡興",
+    "盡責",
+  ]);
+});
+
 test("leaves shared characters alone in a line already in the target script", () => {
   expect(convert("皇后與國王们", "hant")).toBe("皇后與國王們");
 });
