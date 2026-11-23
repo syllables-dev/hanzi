@@ -17,6 +17,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     permissions:
       contents: write
+      id-token: write
       packages: write
     steps:
       - if: github.ref != 'refs/heads/main'
@@ -28,6 +29,11 @@ jobs:
         with:
           bun-version: latest
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
       - run: bun install --frozen-lockfile
 
       - run: bun run build
@@ -35,24 +41,27 @@ jobs:
       - id: version
         run: echo "value=$(bun --print 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          registry-url: https://npm.pkg.github.com
-          scope: "@syllables-dev"
-
-      - id: github
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
+      - id: npm
         run: |
           if npm view "@syllables-dev/hanzi@${{ steps.version.outputs.value }}" version > /dev/null 2>&1; then
-            echo "@syllables-dev/hanzi@${{ steps.version.outputs.value }} is already on github packages"
+            echo "@syllables-dev/hanzi@${{ steps.version.outputs.value }} is already on npm"
           else
-            npm publish
+            npm publish --access public
             echo "published=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - if: steps.github.outputs.published == 'true'
+      - env:
+          GITHUB_PACKAGES_TOKEN: ${{ github.token }}
+        run: |
+          registry=https://npm.pkg.github.com
+          auth="--//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN"
+          if npm view "@syllables-dev/hanzi@${{ steps.version.outputs.value }}" version --registry "$registry" "$auth" > /dev/null 2>&1; then
+            echo "@syllables-dev/hanzi@${{ steps.version.outputs.value }} is already on github packages"
+          else
+            npm publish --registry "$registry" "$auth"
+          fi
+
+      - if: steps.npm.outputs.published == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

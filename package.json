@@ -29,9 +29,6 @@
     "LICENSE",
     "README.md"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "build": "bun scripts/build.ts",
     "prepublishOnly": "bun run build",
