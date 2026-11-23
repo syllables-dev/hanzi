@@ -2,7 +2,7 @@ name: publish
 
 on:
   workflow_run:
-    workflows: [test]
+    workflows: [check]
     branches: [main]
     types: [completed]
   workflow_dispatch:

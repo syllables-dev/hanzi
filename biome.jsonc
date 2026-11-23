@@ -4,11 +4,9 @@
     "includes": [
       "src/**/*.ts",
       "scripts/**/*.ts",
-      "tests/**/*.ts",
       "!biome.jsonc",
       "!package.json",
-      "!bun.lock",
-      "!tests/fixtures"
+      "!bun.lock"
     ]
   },
   "extends": ["ultracite/biome/core"],

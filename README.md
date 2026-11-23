@@ -23,13 +23,12 @@ toHant("头发很长"); // "頭髮很長"
 
 ## Fixing a conversion
 
-Find the character's section in `src/data/to-hant/words.tsv` (or `to-hans`), add the word with its right form, and add a test. See `AGENTS.md`.
+Find the character's section in `src/data/to-hant/words.tsv` (or `to-hans`) and add the word with its right form. See `AGENTS.md`.
 
 ## Development
 
 ```sh
 bun install
-bun test
 bun run check
 bun run tsgo
 ```

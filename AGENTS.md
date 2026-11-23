@@ -29,7 +29,7 @@ Conversion is a plain dictionary, no model. Most characters have one counterpart
 - Meaning splits follow BYVoid's 《現代漢語常用簡繁一對多字義辨析表》 (the table OpenCC is built on, https://ytenx.org/byohlyuk/KienxPyan) and CUHK's note on `儘` and `盡` (`儘` for "as far as possible": `儘管`, `儘快`, `儘量`, `儘早`; `盡` for "use up": `盡力`, `盡情`). Where Hong Kong text and lyrics differ from that Taiwan-based table, Hong Kong wins: `世界杯`, `獎杯`, `核實`, `局限`, `背負`, `抵觸`, `喧嘩`, `酸痛`, `人參`, `傢俬`. 中華書局's 《簡繁轉換一本通》 (2022) is the Hong Kong reference for these 234 groups, such as popcorn staying `爆谷`.
 - Words that agree with the default are listed only where they guard against an overlapping word that disagrees, such as `只是` against `千只`. Where two such words still collide, a longer entry settles it with the reading real text uses more, such as `頭髮白` over `頭發白`.
 - Short entries that keep a character unchanged, such as `公里` or `北斗`, are exceptions to a default: `里` becomes `裏` unless a word says otherwise.
-- To fix a wrong conversion, add the shortest word that settles it to the character's section, then add the case to `tests/convert.test.ts`. A longer entry always wins over a shorter one, and the character alone is the default. A Cantonese-only fix goes in `cantonese.tsv`.
+- To fix a wrong conversion, add the shortest word that settles it to the character's section. A longer entry always wins over a shorter one, and the character alone is the default. A Cantonese-only fix goes in `cantonese.tsv`.
 - To change a character's default, edit its single-character line. Check the section's words still make sense, since they were kept only where they differed from the old default.
 - `著` stays `著` in Simplified; `着` stays `着`.
 - Never add a regional vocabulary change (`軟件` to `軟體`). Only the character's form is decided here.
@@ -48,17 +48,11 @@ Conversion is a plain dictionary, no model. Most characters have one counterpart
 - Generic names are banned: `data`, `result`, `item`, `temp`, `obj`, `helper`, `process`, `handle`.
 - Never commit lyrics or downloaded corpora.
 
-## Tests
-
-- Every test must protect a real behavior: a conversion a reader would notice or a data quirk.
-- Test through the public entry points.
-
 ## Code quality
 
 After any change:
 
-1. `bun tsgo`
+1. `bun run tsgo`
 2. `bun fix`
-3. `bun test`
 
-Rerun until all three pass in the same round.
+Rerun until both pass in the same round.

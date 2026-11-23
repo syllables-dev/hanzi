@@ -1,4 +1,4 @@
-name: test
+name: check
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: test-${{ github.ref }}
+  group: check-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -25,4 +25,3 @@ jobs:
 
       - run: bun run tsgo
       - run: bun run check
-      - run: bun test

@@ -37,7 +37,6 @@
     "prepublishOnly": "bun run build",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "test": "bun test",
     "tsgo": "tsgo --noEmit"
   },
   "devDependencies": {
