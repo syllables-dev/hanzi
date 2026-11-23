@@ -1,0 +1,11 @@
+node_modules
+dist
+*.tgz
+coverage
+*.lcov
+.cache
+*.tsbuildinfo
+.idea
+.DS_Store
+.env
+.env.local
