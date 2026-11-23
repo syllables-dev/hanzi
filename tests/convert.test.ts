@@ -194,6 +194,51 @@ test("writes 儘 for as far as possible and 盡 for using up", () => {
   ]);
 });
 
+test("follows the one-to-many meaning rules where hong kong agrees", () => {
+  expect(
+    convert(
+      [
+        "冲牛奶",
+        "冲突",
+        "稻谷",
+        "爆谷",
+        "别致",
+        "折扇",
+        "打折",
+        "托付",
+        "茶几",
+        "几个",
+        "喂猪",
+        "喂!",
+        "凶宅",
+        "凶手",
+      ],
+      "hant"
+    )
+  ).toEqual([
+    "沖牛奶",
+    "衝突",
+    "稻穀",
+    "爆谷",
+    "別緻",
+    "摺扇",
+    "打折",
+    "託付",
+    "茶几",
+    "幾個",
+    "餵豬",
+    "喂!",
+    "凶宅",
+    "兇手",
+  ]);
+});
+
+test("keeps hong kong habits over the taiwan standard", () => {
+  expect(
+    convert(["世界杯", "核实", "局限", "背负", "家私", "人参"], "hant")
+  ).toEqual(["世界杯", "核實", "局限", "背負", "傢俬", "人參"]);
+});
+
 test("leaves shared characters alone in a line already in the target script", () => {
   expect(convert("皇后與國王们", "hant")).toBe("皇后與國王們");
 });
