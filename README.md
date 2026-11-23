@@ -2,9 +2,6 @@
 
 Detects and converts between Simplified and Traditional Chinese script, writing Traditional in the Hong Kong glyph standard.
 
-> [!NOTE]
-> Private. Published only to GitHub Packages.
-
 ## Install
 
 ```sh
